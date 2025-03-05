@@ -1,0 +1,22 @@
+# Ignorar carpetas de compilación
+bin/
+obj/
+
+# Archivos de configuración de Visual Studio
+.vscode/
+.idea/
+.vs/
+.vsconfig/
+
+# Archivos temporales de usuario
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+logs/
+*.log
+
+# Dependencias de Node.js (si se usan)
+node_modules/

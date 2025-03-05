@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "wTCmZ93N871USdmx6c4drG5TZilzhkDnjnskWT6NodjHzPAc3DtFlEQAN23Dq4iBCGbQ6U3SZmFS7yJuQoLZDA==",
+  "dgSpecHash": "agSg//aEBtnQmZv/NKZOuiI5sRCxXotpkuB+k/3kQ1iHuinCR5vuayrFh1zJH+hpz/4jds7bHKMFUkh3WFNNzQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\fbautista\\source\\repos\\RestIOS\\RestIOS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fbautista\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.5\\microsoft.aspnetcore.openapi.7.0.5.nupkg.sha512",
     "C:\\Users\\fbautista\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\fbautista\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
+    "C:\\Users\\fbautista\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.18.1\\microsoft.visualstudio.azure.containers.tools.targets.1.18.1.nupkg.sha512",
     "C:\\Users\\fbautista\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\fbautista\\.nuget\\packages\\oracle.manageddataaccess.core\\23.7.0\\oracle.manageddataaccess.core.23.7.0.nupkg.sha512",
     "C:\\Users\\fbautista\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
