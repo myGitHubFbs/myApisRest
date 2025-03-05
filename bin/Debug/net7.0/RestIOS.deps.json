@@ -9,6 +9,7 @@
       "RestIOS/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "7.0.5",
+          "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.18.1",
           "Oracle.ManagedDataAccess.Core": "23.7.0",
           "Swashbuckle.AspNetCore": "6.4.0"
         },
@@ -36,6 +37,7 @@
           }
         }
       },
+      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.18.1": {},
       "Microsoft.Win32.SystemEvents/6.0.0": {
         "runtime": {
           "lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
@@ -270,6 +272,13 @@
       "sha512": "sha512-rURwggB+QZYcSVbDr7HSdhw/FELvMlriW10OeOzjPT7pstefMo7IThhtNtDudxbXhW+lj0NfX72Ka5EDsG8x6w==",
       "path": "microsoft.openapi/1.4.3",
       "hashPath": "microsoft.openapi.1.4.3.nupkg.sha512"
+    },
+    "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.18.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RtNQEQQ/bgaxzrsZEkPB+/DFaUgNiq8GtZz/R4lt+mKXPcEvEuawlbl0PB1s7ND9kvkUVZtMphPxE9Ma1VGiFg==",
+      "path": "microsoft.visualstudio.azure.containers.tools.targets/1.18.1",
+      "hashPath": "microsoft.visualstudio.azure.containers.tools.targets.1.18.1.nupkg.sha512"
     },
     "Microsoft.Win32.SystemEvents/6.0.0": {
       "type": "package",
