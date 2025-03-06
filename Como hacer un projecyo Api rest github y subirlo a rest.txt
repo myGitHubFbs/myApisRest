@@ -1,0 +1,115 @@
+-Crear .gitignore en raiz del proyecto
+	# .NET Core
+	bin/
+	obj/
+	.vs/
+	.vscode/
+	*.user
+	*.userosscache
+
+-Entar a consola
+	git init
+	
+	git add .
+	
+	git commit -m "Primer commit - API REST de prueba"
+	
+	git remote add origin https://github.com/tu_usuario/nombre_del_repositorio.git
+
+	git push -u origin master o main depende de la ramaen github
+	Nota: Si usas una rama diferente a master, reemplázala por el nombre correcto de la rama (como main).
+	
+-Verifica en GitHub
+	Ahora ve a tu repositorio en GitHub y verifica que los archivos de tu proyecto estén visibles. ¡Tu API REST ya está en GitHub!
+
+-Actualizar tu repositorio
+	En el futuro, cuando hagas cambios en tu API REST, solo tendrás que seguir estos pasos para actualizar tu repositorio:
+
+/**/
+	-Realiza cambios en tu código.
+	
+	-Agrega los cambios a Git:
+
+	-Copiar
+		git add .
+
+	-Haz un commit con un mensaje descriptivo:
+		git commit -m "Descripción de los cambios realizados"
+
+	-Sube los cambios a GitHub:
+		git push origin master	
+/**/		
+	
+	1. Prepara tu aplicación de API REST en .NET
+		-Asegúrate de que tu aplicación de API REST en .NET esté lista y funcional localmente.
+
+	2. Crea un archivo Dockerfile
+		-Para que Render pueda construir y ejecutar tu aplicación .NET, debes crear un archivo Dockerfile en la raíz de tu proyecto. Este archivo contiene las instrucciones para construir la imagen de Docker.
+
+		-Aquí te dejo un ejemplo de un Dockerfile básico para una aplicación .NET 6 (si usas una versión diferente, asegúrate de ajustar las versiones correspondientes):
+
+			# Etapa de construcción
+			FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+			WORKDIR /app
+			EXPOSE 80
+
+			# Etapa de construcción (compilación)
+			FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+			WORKDIR /src
+			COPY ["MyApi/MyApi.csproj", "MyApi/"]
+			RUN dotnet restore "MyApi/MyApi.csproj"
+			COPY . .
+			WORKDIR "/src/MyApi"
+			RUN dotnet build "MyApi.csproj" -c Release -o /app/build
+
+			FROM build AS publish
+			RUN dotnet publish "MyApi.csproj" -c Release -o /app/publish
+
+			# Imagen final
+			FROM base AS final
+			WORKDIR /app
+			COPY --from=publish /app/publish .
+			ENTRYPOINT ["dotnet", "MyApi.dll"]
+			Descripción de lo que hace el Dockerfile:
+			Etapa de construcción: Usa una imagen de SDK de .NET para restaurar las dependencias y compilar el proyecto.
+			Etapa de publicación: Publica el proyecto, lo que genera los archivos necesarios para ejecutar la API.
+			Imagen base: Usa una imagen de ASP.NET Core runtime para ejecutar la API publicada.
+			COPY: Copia los archivos desde las etapas previas hasta la imagen final.
+			ENTRYPOINT: Especifica el comando para ejecutar la API.
+
+	3. Asegúrate de tener un archivo .dockerignore
+		-Es importante incluir un archivo .dockerignore para evitar que archivos no deseados se incluyan en la imagen de Docker, como archivos binarios, carpetas de compilación, etc. Aquí tienes un ejemplo:
+
+			python
+			bin/
+			obj/
+			.vscode/
+			.idea/
+
+	4. Crea un repositorio en GitHub (si aún no lo tienes)
+		-Si aún no has subido tu código a GitHub, crea un repositorio nuevo y sube tu proyecto con el Dockerfile incluido.
+
+	5. Conecta GitHub con Render
+		-Una vez que tu código esté en GitHub, sigue estos pasos para desplegarlo en Render:
+
+		-Inicia sesión en Render y haz clic en "New +".
+		-Selecciona "Web Service".
+		-Selecciona tu repositorio de GitHub.
+		-Cuando llegues a la configuración del servicio, Render debería detectar que tu proyecto tiene un Dockerfile y te pedirá confirmar que quieres usar Docker.
+		-Asegúrate de que la configuración esté correcta, especialmente el comando de inicio (dotnet MyApi.dll).
+		-Si es necesario, configura las variables de entorno (por ejemplo, cadenas de conexión de base de datos o claves API).
+
+	6. Configura los detalles de tu servicio en Render
+		-Render te pedirá que configures algunos detalles más, como:
+
+			-Branch: Selecciona la rama de tu repositorio (normalmente main o master).
+			-Comando de construcción: Render debería usar el Dockerfile automáticamente, por lo que no deberías tener que configurarlo.
+			-Comando de inicio: Render debería reconocer dotnet MyApi.dll como el comando de inicio, pero si no, agrégalo manualmente.
+			
+	7. Crea el Web Service en Render
+		-Haz clic en "Create Web Service" y Render comenzará a construir tu contenedor Docker. Después de un breve período, tu aplicación se desplegará y Render te proporcionará una URL donde podrás acceder a tu API.
+
+	8. Verifica el despliegue
+		-Una vez que el despliegue esté completo, puedes visitar la URL que Render te ha proporcionado para verificar que tu API REST esté funcionando correctamente.
+		
+		

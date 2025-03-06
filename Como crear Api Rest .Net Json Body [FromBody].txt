@@ -1,0 +1,193 @@
+Si deseas enviar y recibir datos en formato **JSON** en tu API REST en **.NET**, puedes hacerlo utilizando el cuerpo de la solicitud (request body) y especificando que los datos serán **JSON**.
+
+### Paso 1: Asegúrate de que el controlador esté listo para aceptar JSON
+
+Cuando defines tu API en **ASP.NET Core**, es importante asegurarte de que los parámetros en tus métodos de controlador estén listos para recibir objetos en formato **JSON**.
+
+### Ejemplo de controlador con JSON en el cuerpo de la solicitud:
+
+Vamos a crear un ejemplo donde creamos un producto usando un cuerpo **JSON** para una solicitud **POST** y también lo actualizamos usando **PUT**.
+
+#### Paso 1: Definir el modelo (Product)
+
+Primero, definimos una clase `Product` que representará los datos que recibirás y devolverás en formato **JSON**:
+
+```csharp
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+```
+
+#### Paso 2: Crear un controlador que maneje el cuerpo JSON
+
+Luego, creamos un controlador en **ASP.NET Core** que recibe y devuelve JSON. Para manejar el cuerpo de la solicitud (request body), usamos el atributo **[FromBody]**.
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+
+namespace MiApiRest.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductsController : ControllerBase
+    {
+        private static List<Product> products = new List<Product>
+        {
+            new Product { Id = 1, Name = "Producto 1", Price = 10.00M },
+            new Product { Id = 2, Name = "Producto 2", Price = 20.00M }
+        };
+
+        // GET: api/products
+        [HttpGet]
+        public IActionResult GetProducts()
+        {
+            return Ok(products);
+        }
+
+        // GET: api/products/1
+        [HttpGet("{id}")]
+        public IActionResult GetProduct(int id)
+        {
+            var product = products.Find(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
+        }
+
+        // POST: api/products
+        [HttpPost]
+        public IActionResult CreateProduct([FromBody] Product newProduct)
+        {
+            if (newProduct == null)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            newProduct.Id = products.Count + 1; // Simula asignación de ID
+            products.Add(newProduct);
+
+            return CreatedAtAction(nameof(GetProduct), new { id = newProduct.Id }, newProduct);
+        }
+
+        // PUT: api/products/1
+        [HttpPut("{id}")]
+        public IActionResult UpdateProduct(int id, [FromBody] Product updatedProduct)
+        {
+            var existingProduct = products.Find(p => p.Id == id);
+            if (existingProduct == null)
+            {
+                return NotFound();
+            }
+
+            existingProduct.Name = updatedProduct.Name;
+            existingProduct.Price = updatedProduct.Price;
+
+            return NoContent(); // 204 No Content
+        }
+
+        // DELETE: api/products/1
+        [HttpDelete("{id}")]
+        public IActionResult DeleteProduct(int id)
+        {
+            var product = products.Find(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            products.Remove(product);
+            return NoContent(); // 204 No Content
+        }
+    }
+}
+```
+
+### Paso 2: Configuración de JSON en ASP.NET Core
+
+**ASP.NET Core** automáticamente maneja la serialización y deserialización de objetos **JSON** con el middleware integrado. No es necesario agregar configuración adicional para recibir y devolver **JSON**, ya que **ASP.NET Core** lo hace por defecto usando el paquete **Newtonsoft.Json** o el **JsonSerializer** integrado.
+
+### Paso 3: Probar la API con **JSON** en el cuerpo de la solicitud
+
+#### 1. **GET Request** (para obtener todos los productos)
+
+- **Método**: `GET`
+- **URL**: `https://localhost:5001/api/products`
+
+#### 2. **POST Request** (para crear un nuevo producto)
+
+- **Método**: `POST`
+- **URL**: `https://localhost:5001/api/products`
+- **Cuerpo (Body)**: 
+
+   ```json
+   {
+     "name": "Producto Nuevo",
+     "price": 30.00
+   }
+   ```
+
+   En **Postman** o **Insomnia**, puedes hacer una solicitud **POST** a esta URL y enviar el siguiente cuerpo en formato **JSON**.
+
+#### 3. **PUT Request** (para actualizar un producto existente)
+
+- **Método**: `PUT`
+- **URL**: `https://localhost:5001/api/products/1` (reemplaza `1` por el ID del producto que deseas actualizar).
+- **Cuerpo (Body)**:
+
+   ```json
+   {
+     "id": 1,
+     "name": "Producto Actualizado",
+     "price": 35.00
+   }
+   ```
+
+#### 4. **DELETE Request** (para eliminar un producto)
+
+- **Método**: `DELETE`
+- **URL**: `https://localhost:5001/api/products/1` (reemplaza `1` por el ID del producto que deseas eliminar).
+
+### Paso 4: Verificar la respuesta
+
+- **GET** devuelve la lista de productos.
+- **POST** devuelve el producto recién creado con un código de estado **201 Created**.
+- **PUT** devuelve **204 No Content** si la actualización es exitosa.
+- **DELETE** devuelve **204 No Content** si la eliminación es exitosa.
+
+### Resumen
+
+- **POST** y **PUT** requieren que envíes datos en el cuerpo de la solicitud en formato **JSON**.
+- Usa el atributo **[FromBody]** en el controlador para indicar que deseas que **ASP.NET Core** deserialice el JSON recibido en un objeto.
+- Los métodos **GET** y **DELETE** no requieren cuerpo, pero **POST** y **PUT** requieren que el cuerpo esté en formato **JSON**.
+
+### Ejemplo de prueba con Postman
+
+1. **GET**: Prueba la URL `https://localhost:5001/api/products` para obtener todos los productos.
+2. **POST**: Haz una solicitud **POST** a `https://localhost:5001/api/products` con el siguiente cuerpo **JSON**:
+
+   ```json
+   {
+     "name": "Nuevo Producto",
+     "price": 15.00
+   }
+   ```
+
+3. **PUT**: Haz una solicitud **PUT** a `https://localhost:5001/api/products/1` con el siguiente cuerpo **JSON**:
+
+   ```json
+   {
+     "id": 1,
+     "name": "Producto Modificado",
+     "price": 18.00
+   }
+   ```
+
+4. **DELETE**: Haz una solicitud **DELETE** a `https://localhost:5001/api/products/1`.
+
+Con estos pasos, habrás creado una API REST en **ASP.NET Core** que acepta y responde con **JSON**. ¡Prueba y ajusta según tus necesidades! Si tienes más dudas o necesitas ayuda adicional, ¡avísame!

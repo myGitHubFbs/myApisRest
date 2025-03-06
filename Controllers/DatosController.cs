@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestIOS.Conexion;
 using RestIOS.Models;
+using RestIOS.ParametrosBody;
 using System.Data;
 
 namespace RestIOS.Controllers
@@ -23,7 +24,7 @@ namespace RestIOS.Controllers
 
         // POST api/Datos
         [HttpPost]
-        public IActionResult Post([FromBody] Datos datos)
+        public IActionResult Post([FromBody] RegistraAsistencia registraAsistencia)
         {
             if (User == null)
             {
@@ -39,7 +40,29 @@ namespace RestIOS.Controllers
             datos.numero = Convert.ToInt16(vDt.Rows[0]["numero"].ToString());*/
 
             // Aquí puedes agregar lógica para guardar el usuario etc.
-            return Ok(new { Mensaje = "Datos recibidos", datos });
+            //return Ok(new { Mensaje = "Datos recibidos", datos });
+
+            // Crear una instancia de DatosEmpleado
+            DatosEmpleado empleado = new DatosEmpleado
+            {
+                empleado = "1234",
+                nombre = "Juan Perez",
+                organismo = "Gobierno",
+                foto_url = "http://example.com/foto.jpg",
+                foto_base64 = registraAsistencia.valor,
+                status = "A"
+            };
+
+            // Crear una instancia de Datos y asignar la instancia de DatosEmpleado
+            Datos datos = new Datos
+            {
+                status = "0",
+                resultado = "Éxito",
+                usuario = "admin",
+                empleado = empleado // Asignar el objeto empleado
+            };
+
+            return Ok(new { datos });
         }
 
     }
