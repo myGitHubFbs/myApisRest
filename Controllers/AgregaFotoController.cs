@@ -1,30 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RestIOS.Conexion;
 using RestIOS.Models;
 using RestIOS.ParametrosBody;
-using System.Data;
 
 namespace RestIOS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
 
-    public class DatosController : Controller
+    public class AgregaFotoController : Controller
     {
-        private readonly IConfiguration _configuration;
-
-        public DatosController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-        DmlOracle conexion = new DmlOracle();
-        DataSet cDs = new DataSet();
-        DataTable cDt = new DataTable();
-
         // POST api/Datos
         [HttpPost]
-        public IActionResult Post([FromBody] RegistraAsistencia registraAsistencia)
+        public IActionResult AgregaFoto([FromBody] AgregaFoto agregarFoto)
         {
             if (User == null)
             {
@@ -47,9 +34,9 @@ namespace RestIOS.Controllers
             {
                 empleado = "1234",
                 nombre = "Juan Perez",
-                organismo = "Gobierno",
+                organismo = "BUR",
                 foto_url = "http://example.com/foto.jpg",
-                foto_base64 = registraAsistencia.valor,
+                foto_base64 = null,
                 status = "A"
             };
 
@@ -65,6 +52,6 @@ namespace RestIOS.Controllers
             return Ok(new { datos }); //regresa el json con datos :{ }
             //return Ok( datos ); //regresa el json { }
         }
-
     }
+
 }

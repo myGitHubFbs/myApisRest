@@ -11,6 +11,12 @@ namespace RestIOS.ParametrosBody
         public double? longitud { get; set; }
         public string? tipo_medio { get; set; }
         public string? tipo_registro { get; set; }
-
     }
+
+    public class AgregaFoto
+    {
+        public string? empleado { get; set; }
+        public string? fotoBase64 { get; set; }
+    }
+
 }
