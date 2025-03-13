@@ -40,7 +40,7 @@ namespace RestIOS.Controllers
             {
                 status = "0",
                 resultado = "Éxito",
-                usuario = "ADmin",
+                usuario = "Admin",
                 empleado = empleado // Asignar el objeto empleado
             };
 
