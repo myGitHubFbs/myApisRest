@@ -19,4 +19,9 @@ namespace RestIOS.ParametrosBody
         public string? fotoBase64 { get; set; }
     }
 
+    public class ReconocimientoFacial
+    {
+        public string? foto { get; set; }
+    }
+
 }
