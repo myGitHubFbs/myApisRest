@@ -154,7 +154,7 @@ class FacialRecognition
         CvInvoke.CvtColor(imagenParametro, grayImage, ColorConversion.Bgr2Gray);
 
         // Detectar rostros en la imagen
-        var faces = _faceCascade.DetectMultiScale(grayImage, 1.1, 3, default, default);
+        var faces = _faceCascade.DetectMultiScale(grayImage, 1.1, 5, default, default);
 
         if (faces.Length > 0)
         {
@@ -167,7 +167,7 @@ class FacialRecognition
             CvInvoke.CvtColor(imagenGuardada, grayImage, ColorConversion.Bgr2Gray);
 
             // Detectar rostros en la imagen
-            faces = _faceCascade.DetectMultiScale(grayImage, 1.1, 3, default, default);
+            faces = _faceCascade.DetectMultiScale(grayImage, 1.1, 5, default, default);
 
             if (faces.Length > 0)
             {
@@ -179,11 +179,11 @@ class FacialRecognition
                 if (facesAreSimilar)
                 {
                     // Mostrar el resultado
-                    CvInvoke.Imshow("Imagen", faceImage1);
+                    CvInvoke.Imshow("Imagen", imagenParametro);
                     CvInvoke.WaitKey(0);
                     CvInvoke.DestroyAllWindows();
 
-                    CvInvoke.Imshow("Imagen", faceImage2);
+                    CvInvoke.Imshow("Imagen", imagenGuardada);
                     CvInvoke.WaitKey(0);
                     CvInvoke.DestroyAllWindows();
 

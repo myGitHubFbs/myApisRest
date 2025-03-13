@@ -81,16 +81,24 @@ namespace RestIOS.Controllers
                     // Validar rostros                    
                     objetoValidar = facialRecognition.ValidaRostro(image1, image2, Path.GetFileName(archivo).Substring(0, Path.GetFileName(archivo).LastIndexOf(".")));
 
-                    //Para correr en render
-                    empleado = new DatosEmpleado
+                    if (objetoValidar.status == "0")
                     {
-                        empleado = "123",
-                        nombre = "Juan Pérez",
-                        organismo = "GOB",
-                        foto_url = "",
-                        foto_base64 = registraAsistencia.valor,
-                        status = "A"
-                    };
+                        //Para correr en render
+                        empleado = new DatosEmpleado
+                        {
+                            empleado = "123",
+                            nombre = "Juan Pérez",
+                            organismo = "GOB",
+                            foto_url = "",
+                            foto_base64 = registraAsistencia.valor,
+                            status = "A"
+                        };
+
+                        System.IO.File.Delete(rutaImage1);
+
+                        break;
+                    }
+                    //
 
                     //Datos Oracle
                     /*if (objetoValidar.status == "0") {
