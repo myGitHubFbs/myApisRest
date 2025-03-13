@@ -81,7 +81,19 @@ namespace RestIOS.Controllers
                     // Validar rostros                    
                     objetoValidar = facialRecognition.ValidaRostro(image1, image2, Path.GetFileName(archivo).Substring(0, Path.GetFileName(archivo).LastIndexOf(".")));
 
-                    if (objetoValidar.status == "0") {
+                    //Para correr en render
+                    empleado = new DatosEmpleado
+                    {
+                        empleado = "123",
+                        nombre = "Juan Pérez",
+                        organismo = "GOB",
+                        foto_url = "",
+                        foto_base64 = registraAsistencia.valor,
+                        status = "A"
+                    };
+
+                    //Datos Oracle
+                    /*if (objetoValidar.status == "0") {
                         conexion.pConnectionString = _configuration.GetConnectionString("ConexionOracle")!;
 
                         DataSet vDs = conexion.Consultar("select empl.empleado, trim(empl.nombre || ' ' || empl.apellido_paterno || ' ' || empl.apellido_materno) nombre, empl.organismo, empl.status, area.descripcion area, ep.descripcion entidad, ei.imagen " +
@@ -126,7 +138,7 @@ namespace RestIOS.Controllers
                         System.IO.File.Delete(rutaImageregreso);
 
                         break;
-                    }
+                    }*/
 
                     /*
                     // Detectar rostros en ambas imágenes
