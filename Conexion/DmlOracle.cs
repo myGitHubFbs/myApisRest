@@ -11,7 +11,7 @@ namespace RestIOS.Conexion
         {
             OracleCommand comando = new OracleCommand();
             OracleDataAdapter adapter = new OracleDataAdapter();
-            OracleConnection conexion = new OracleConnection(pConnectionString);  //new OracleConnection(System.Configuration.ConfigurationManager.ConnectionStrings["ConexionOracle"].ConnectionString);
+            OracleConnection conexion = new OracleConnection(pConnectionString); //new OracleConnection(System.Configuration.ConfigurationManager.ConnectionStrings["ConexionOracle"].ConnectionString);
             DataTable dt = new DataTable();
 
             comando.CommandText = consulta;

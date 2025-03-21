@@ -34,21 +34,6 @@ namespace RestIOS.Controllers
         [HttpPost]
         public IActionResult RegistraAsistencia([FromBody] RegistraAsistencia registraAsistencia)
         {
-            string status = "0";
-            string resultado = "";
-
-            if (User == null)
-            {
-                return BadRequest();
-            }
-
-            // Aquí puedes agregar lógica para guardar el usuario etc.
-
-            var facialRecognition = new FacialRecognition();
-
-            // String Base64 (esto debe ser una cadena Base64 válida)
-            string rutaImage1 = facialRecognition.ConvertBase64ToArchivo(registraAsistencia.valor);
-
             Crostro objetoValidar = new Crostro();
 
             // Crear una instancia de DatosEmpleado
@@ -62,27 +47,43 @@ namespace RestIOS.Controllers
                 status = null
             };
 
-            if (rutaImage1 != "Error")
+            // Crear una instancia de Datos
+            Datos datos = new Datos
             {
-                string ruta = Directory.GetCurrentDirectory() + "\\imgs";
+                status = null,
+                resultado = null,
+                usuario = null,
+                empleado = null
+            };
 
-                // Obtener todos los archivos en el directorio especificado
-                string[] archivos = Directory.GetFiles(ruta);
+            try
+            {
+                //string status = "0";
+                //string resultado = "";
 
-                // Mostrar los archivos encontrados
-                foreach (var archivo in archivos)
+                if (User == null)
                 {
-                    string rutaImage2 = archivo; // "imgs/986774.jpg";
+                    return BadRequest();
+                }
 
+                // Aquí puedes agregar lógica para guardar el usuario etc.
+
+                var facialRecognition = new FacialRecognition();
+
+                // String Base64 (esto debe ser una cadena Base64 válida)
+                string rutaImage1 = facialRecognition.ConvertBase64ToArchivo(registraAsistencia.valor!);
+
+                if (rutaImage1 != "Error")
+                {
                     // Convertir las imágenes Base64 a objetos Mat
                     Mat image1 = facialRecognition.ConvertBase64ToMat(rutaImage1);
-                    Mat image2 = facialRecognition.ConvertBase64ToMat(rutaImage2);
 
                     // Validar rostros                    
-                    objetoValidar = facialRecognition.ValidaRostro(image1, image2, Path.GetFileName(archivo).Substring(0, Path.GetFileName(archivo).LastIndexOf(".")));
+                    objetoValidar = facialRecognition.ValidaRostro(image1);
 
                     //Datos Oracle
-                    if (objetoValidar.status == "0") {
+                    if (objetoValidar.status == "0")
+                    {
                         conexion.pConnectionString = _configuration.GetConnectionString("ConexionOracle")!;
 
                         DataSet vDs = conexion.Consultar("select empl.empleado, trim(empl.nombre || ' ' || empl.apellido_paterno || ' ' || empl.apellido_materno) nombre, empl.organismo, empl.status, area.descripcion area, ep.descripcion entidad, ei.imagen " +
@@ -91,7 +92,7 @@ namespace RestIOS.Controllers
                                                         "entidad_publica ep, " +
                                                         "area_2_Vw area, " +
                                                         "empleado_imagen ei " +
-                                                        "where empl.empleado = " + Path.GetFileName(archivo).Substring(0, Path.GetFileName(archivo).LastIndexOf(".")) +
+                                                        "where empl.empleado = " + objetoValidar.archivo +
                                                         " and empl.organismo = plem.organismo " +
                                                         "and empl.empleado = plem.empleado " +
                                                         "and plem.status = 'A' " +
@@ -125,8 +126,6 @@ namespace RestIOS.Controllers
                         CvInvoke.DestroyAllWindows();
 
                         System.IO.File.Delete(rutaImageregreso);
-
-                        break;
                     }
 
                     /*
@@ -163,25 +162,30 @@ namespace RestIOS.Controllers
                         resultado = "No se detectaron rostros en una o ambas imágenes.";
                     }*/
                 }
+                else
+                {
+                    objetoValidar.status = "1";
+                    objetoValidar.resultado = "Parámetro valor no corresponde al tipo byte64.";
+                }
+
+                System.IO.File.Delete(rutaImage1);
+
+                //Asignar la instancia de DatosEmpleado
+                datos = new Datos
+                {
+                    status = objetoValidar.status,
+                    resultado = objetoValidar.resultado,
+                    usuario = registraAsistencia.usuario,
+                    empleado = empleado // Asignar el objeto empleado
+                };
             }
-            else {
+            catch(Exception ex) {
                 objetoValidar.status = "1";
-                objetoValidar.resultado = "Parámetro valor no corresponde al tipo byte64.";
+                objetoValidar.resultado = ex.Message;
             }
-
-            System.IO.File.Delete(rutaImage1);          
-
-            // Crear una instancia de Datos y asignar la instancia de DatosEmpleado
-            Datos datos = new Datos
-            {
-                status = objetoValidar.status,
-                resultado = objetoValidar.resultado,
-                usuario = registraAsistencia.usuario,
-                empleado = empleado // Asignar el objeto empleado
-            };
 
             return Ok(new { datos }); //regresa el json con datos :{ }
-                                      //return Ok( datos ); //regresa el json { }
+            //return Ok( datos ); //regresa el json { }
         }
     }
 
