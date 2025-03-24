@@ -16,7 +16,7 @@ namespace RestIOS.Controllers
             DatosEmpleado empleado = new DatosEmpleado
             {
                 empleado = numEmpleado.ToString(),
-                nombre = "Juan Perez",
+                nombre = "Juan Pérez",
                 organismo = "BUR",
                 foto_url = "http://example.com/foto.jpg",
                 foto_base64 = null,
