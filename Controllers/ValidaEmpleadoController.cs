@@ -26,8 +26,8 @@ namespace RestIOS.Controllers
             // Crear una instancia de Datos
             Datos datos = new Datos
             {
-                status = "10",
-                resultado = "No Éxito",
+                status = "0",
+                resultado = "Éxito",
                 usuario = "admin",
                 empleado = empleado // Asignar el objeto empleado
             };
