@@ -8,14 +8,14 @@ namespace RestIOS.Controllers
 
     public class ValidaEmpleadoController : Controller
     {
-        [HttpGet("{empleado}")]
-        public IActionResult ValidaEmpleado()
+        [HttpGet("{numEmpleado}")]
+        public IActionResult ValidaEmpleado(int numEmpleado)
         {
  
             // Crear una instancia de DatosEmpleado
             DatosEmpleado empleado = new DatosEmpleado
             {
-                empleado = "{empleado}",
+                empleado = numEmpleado.ToString(),
                 nombre = "Juan Perez",
                 organismo = "BUR",
                 foto_url = "http://example.com/foto.jpg",
