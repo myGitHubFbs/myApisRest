@@ -3,8 +3,8 @@ using RestIOS.Models;
 
 namespace RestIOS.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
 
     public class ValidaEmpleadoController : Controller
     {
