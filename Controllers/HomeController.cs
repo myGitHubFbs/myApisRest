@@ -44,8 +44,8 @@ namespace RestIOS.Controllers
                 empleado = empleado // Asignar el objeto empleado
             };
 
-            return Ok(new { datos }); //regresa el json con datos :{ }
-            //return Ok( datos ); //regresa el json { }
+            //return Ok(new { datos }); //regresa el json con datos :{ }
+            return Ok( datos ); //regresa el json { }
         }
     }
 

@@ -184,8 +184,8 @@ namespace RestIOS.Controllers
                 objetoValidar.resultado = ex.Message;
             }
 
-            //return Ok(new { datos }); //regresa el json con datos :{ }
-            return Ok( datos ); //regresa el json { }
+            return Ok(new { datos }); //regresa el json con datos :{ }
+            //return Ok( datos ); //regresa el json { }
         }
     }
 
